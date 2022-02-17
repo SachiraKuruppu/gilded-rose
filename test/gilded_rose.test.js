@@ -1,4 +1,5 @@
 const {Shop, Item} = require("../src/gilded_rose");
+const { ITEM_TYPES } = require("../src/item_strategies");
 
 describe("Gilded Rose", function() {
   it("should foo", function() {
@@ -12,8 +13,8 @@ describe("Gilded Rose", function() {
     const item_names = {
       decreasing_item_names: ["foo"],
       increasing_item_names: [
-        "Aged Brie",
-        "Backstage passes to a TAFKAL80ETC concert",
+        ITEM_TYPES.AGED_BRIE,
+        ITEM_TYPES.BACKSTAGE,
       ]
     };
 
@@ -30,11 +31,13 @@ describe("Gilded Rose", function() {
     it("General: when sellIn passed, quality degrades twice as fast", function() {
       const quality = 10;
 
-      const gildedRose = new Shop(item_names.increasing_item_names.forEach(name => new Item(name, 10, quality)));
-      const gildedRose_0 = new Shop(item_names.increasing_item_names.forEach(name => new Item(name, 0, quality)));
+      const gildedRose = new Shop(item_names.decreasing_item_names.map(name => new Item(name, 10, quality)));
+      const gildedRose_0 = new Shop(item_names.decreasing_item_names.map(name => new Item(name, 0, quality)));
 
       const items   = gildedRose.updateQuality();
       const items_0 = gildedRose_0.updateQuality();
+
+      expect(items.length).toBeGreaterThan(0);
 
       for (let i = 0; i < items.length; i++) {
         const unexpired_decrease = quality - items[i].quality;
@@ -44,8 +47,10 @@ describe("Gilded Rose", function() {
     });
 
     it("General: quality of an item is never negative", function() {
-      const gildedRose = new Shop(item_names.decreasing_item_names.forEach(name => new Item(name, 0, 0)));
+      const gildedRose = new Shop(item_names.decreasing_item_names.map(name => new Item(name, 0, 0)));
       const items = gildedRose.updateQuality();
+
+      expect(items.length).toBeGreaterThan(0);
 
       items.forEach(item => expect(item.quality).toBeGreaterThanOrEqual(0));
     });
@@ -60,8 +65,10 @@ describe("Gilded Rose", function() {
     });
     
     it("General: quality of an item is never more than 50", function() {
-      const gildedRose = new Shop(item_names.increasing_item_names.forEach(name => new Item(name, 10, 50)));
+      const gildedRose = new Shop(item_names.increasing_item_names.map(name => new Item(name, 10, 50)));
       const items = gildedRose.updateQuality();
+
+      expect(items.length).toBeGreaterThan(0);
 
       items.forEach(item => expect(item.quality).toBe(50));
     });
@@ -93,6 +100,8 @@ describe("Gilded Rose", function() {
 
       const gildedRose = new Shop(items);
       items = gildedRose.updateQuality();
+
+      expect(items.length).toBeGreaterThan(0);
 
       for (let i = 0; i < sellIns.length; i++) {
         expect(items[i].quality).toBe(expected_quality[i])
