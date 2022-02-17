@@ -39,7 +39,7 @@ ItemStrategyManager = {
     _strategies: [],
     _default_strategy: new SellInQualityStrategy('default', 
         item => Math.max(item.sellIn - 1, MIN_SELL_IN), 
-        item => Math.max(item.quality - 1, MIN_QUALITY)
+        item => item.sellIn > 0 ? Math.max(item.quality - NORMAL_QUALITY_RATE, MIN_QUALITY) : Math.max(item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
     ),
 
     addStrategy(strategy) {
