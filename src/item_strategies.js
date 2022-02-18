@@ -20,7 +20,7 @@ const NORMAL_QUALITY_RATE = 1
 // quality_fn(item) = return the new quality value.
 class SellInQualityStrategy {
     constructor(name, sellIn_fn, quality_fn) {
-        this._name = name;
+        this.name = name;
         this._sellIn_fn = sellIn_fn;
         this._quality_fn = quality_fn;
     }
@@ -38,23 +38,37 @@ class SellInQualityStrategy {
 // _default_strategy is used for general (non special case) items.
 ItemStrategyManager = {
     _strategies: [],
-    _default_strategy: new SellInQualityStrategy("default", 
-        item => Math.max(item.sellIn - 1, MIN_SELL_IN), 
-        item => Math.max(item.sellIn > 0 ? item.quality - NORMAL_QUALITY_RATE : item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
-    ),
+    _default_strategy: undefined,
 
-    addStrategy(strategy) {
-        this._strategies.push(strategy);
+    addStrategy(strategy, isDefault=false) {
+        if (isDefault && this._default_strategy !== undefined)
+            throw "Default strategy already defined.";
+
+        if (isDefault)
+            this._default_strategy = strategy
+        else
+            this._strategies.push(strategy);
     },
 
     getStrategy(name) {
-        const strategy = this._strategies.find(strategy => strategy._name === name);
-        if (strategy === undefined)
+        const strategy = this._strategies.find(strategy => strategy.name === name);
+        if (strategy === undefined) {
+            if (this._default_strategy === undefined)
+                throw "Default strategy undefined."
+            
             return this._default_strategy;
+        }
             
         return strategy;
     }
 };
+
+// Default strategy
+ItemStrategyManager.addStrategy(new SellInQualityStrategy(
+    "default",
+    item => Math.max(item.sellIn - 1, MIN_SELL_IN), 
+    item => Math.max(item.sellIn > 0 ? item.quality - NORMAL_QUALITY_RATE : item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
+), true);
 
 // Aged Brie: Increases in quality, older it gets.
 // quality capped at MAX_QUALITY.
