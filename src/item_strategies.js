@@ -97,11 +97,11 @@ ItemStrategyManager.addStrategy(new SellInQualityStrategy(
     }
 ));
 
-// Sulfuras: don't have to be sold or decreases in quality.
+// Sulfuras: don't have to be sold or decreases in quality. Quality of sulfuras is 80.
 ItemStrategyManager.addStrategy(new SellInQualityStrategy(
     ITEM_TYPES.SULFURAS,
     item => item.sellIn,
-    item => item.quality
+    item => 80
 ));
 
 // Conjured: quality degrades twice as fast as normal items
