@@ -11,7 +11,10 @@ describe("Gilded Rose", function() {
   describe("Test updateQuality() for the given requirements", function() {
 
     const item_names = {
-      decreasing_item_names: ["foo"],
+      decreasing_item_names: [
+        "foo",
+        ITEM_TYPES.CONJURED
+      ],
       increasing_item_names: [
         ITEM_TYPES.AGED_BRIE,
         ITEM_TYPES.BACKSTAGE,
@@ -106,6 +109,21 @@ describe("Gilded Rose", function() {
       for (let i = 0; i < sellIns.length; i++) {
         expect(items[i].quality).toBe(expected_quality[i])
       }
+    });
+
+    it("Conjured: quality degrades twice as fast as normal items", function() {
+      const quality = 10;
+
+      const gildedRose = new Shop([
+        new Item("foo", 10, quality), // normal item
+        new Item(ITEM_TYPES.CONJURED, 10, quality) // conjured item
+      ]);
+      items = gildedRose.updateQuality();
+
+      const normal_decrease = quality - items[0].quality;
+      const conjured_decrease = quality - items[1].quality;
+
+      expect(conjured_decrease).toBe(normal_decrease * 2);
     });
 
   });
