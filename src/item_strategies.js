@@ -40,7 +40,7 @@ ItemStrategyManager = {
     _strategies: [],
     _default_strategy: new SellInQualityStrategy('default', 
         item => Math.max(item.sellIn - 1, MIN_SELL_IN), 
-        item => item.sellIn > 0 ? Math.max(item.quality - NORMAL_QUALITY_RATE, MIN_QUALITY) : Math.max(item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
+        item => Math.max(item.sellIn > 0 ? item.quality - NORMAL_QUALITY_RATE : item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
     ),
 
     addStrategy(strategy) {
@@ -93,7 +93,7 @@ ItemStrategyManager.addStrategy(new SellInQualityStrategy(
 // Conjured: quality degrades twice as fast as normal items
 ItemStrategyManager.addStrategy(new SellInQualityStrategy(
     ITEM_TYPES.CONJURED,
-    item => item.sellIn - 1,
+    item => Math.max(item.sellIn - 1, MIN_SELL_IN),
     item => Math.max(item.sellIn > 0 ? item.quality - (NORMAL_QUALITY_RATE * 2) : item.quality - (NORMAL_QUALITY_RATE * 4), MIN_QUALITY)
 ));
 
