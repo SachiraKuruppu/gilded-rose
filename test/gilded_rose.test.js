@@ -83,7 +83,7 @@ describe("Gilded Rose", function() {
       const items = gildedRose.updateQuality();
 
       expect(items[0].sellIn).toBe(sellIn);
-      expect(items[0].quality).toBe(quality);
+      expect(items[0].quality).toBe(80);
     });
     
     it("Backstage passes: increases in quality as the selling value approaches", function() {
