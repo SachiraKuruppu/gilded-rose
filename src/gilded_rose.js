@@ -1,4 +1,4 @@
-const { ITEM_TYPES, ItemStrategyManager } = require('./item_strategies')
+const { ITEM_TYPES, ItemStrategyManager } = require("./item_strategies")
 
 class Item {
   constructor(name, sellIn, quality){

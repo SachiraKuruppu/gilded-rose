@@ -3,10 +3,10 @@
 // Implement strategies to update the sellIn and quality of items. Uses the Strategy design pattern.
 
 const ITEM_TYPES = {
-    AGED_BRIE: 'Aged Brie',
-    BACKSTAGE: 'Backstage passes to a TAFKAL80ETC concert',
-    SULFURAS: 'Sulfuras, Hand of Ragnaros',
-    CONJURED: 'Conjured'
+    AGED_BRIE: "Aged Brie",
+    BACKSTAGE: "Backstage passes to a TAFKAL80ETC concert",
+    SULFURAS: "Sulfuras, Hand of Ragnaros",
+    CONJURED: "Conjured"
 }
 
 const MIN_SELL_IN = 0;
@@ -38,7 +38,7 @@ class SellInQualityStrategy {
 // _default_strategy is used for general (non special case) items.
 ItemStrategyManager = {
     _strategies: [],
-    _default_strategy: new SellInQualityStrategy('default', 
+    _default_strategy: new SellInQualityStrategy("default", 
         item => Math.max(item.sellIn - 1, MIN_SELL_IN), 
         item => Math.max(item.sellIn > 0 ? item.quality - NORMAL_QUALITY_RATE : item.quality - (NORMAL_QUALITY_RATE * 2), MIN_QUALITY)
     ),
