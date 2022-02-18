@@ -5,7 +5,8 @@
 const ITEM_TYPES = {
     AGED_BRIE: 'Aged Brie',
     BACKSTAGE: 'Backstage passes to a TAFKAL80ETC concert',
-    SULFURAS: 'Sulfuras, Hand of Ragnaros'
+    SULFURAS: 'Sulfuras, Hand of Ragnaros',
+    CONJURED: 'Conjured'
 }
 
 const MIN_SELL_IN = 0;
@@ -87,6 +88,13 @@ ItemStrategyManager.addStrategy(new SellInQualityStrategy(
     ITEM_TYPES.SULFURAS,
     item => item.sellIn,
     item => item.quality
+));
+
+// Conjured: quality degrades twice as fast as normal items
+ItemStrategyManager.addStrategy(new SellInQualityStrategy(
+    ITEM_TYPES.CONJURED,
+    item => item.sellIn - 1,
+    item => Math.max(item.sellIn > 0 ? item.quality - (NORMAL_QUALITY_RATE * 2) : item.quality - (NORMAL_QUALITY_RATE * 4), MIN_QUALITY)
 ));
 
 module.exports = {
