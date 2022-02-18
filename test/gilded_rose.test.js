@@ -58,7 +58,7 @@ describe("Gilded Rose", function() {
     it("Aged Brie: increases in quality the older it gets", function() {
       const quality = 10;
 
-      const gildedRose = new Shop([new Item("Aged Brie", 5, quality)]);
+      const gildedRose = new Shop([new Item(ITEM_TYPES.AGED_BRIE, 5, quality)]);
       const items = gildedRose.updateQuality();
 
       expect(items[0].quality).toBeGreaterThan(quality);
@@ -76,7 +76,7 @@ describe("Gilded Rose", function() {
     it("Sullfuras: never has to be sold or decreases in quality", function() {
       const sellIn = 10, quality = 10;
 
-      const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", sellIn, quality)]);
+      const gildedRose = new Shop([new Item(ITEM_TYPES.SULFURAS, sellIn, quality)]);
       const items = gildedRose.updateQuality();
 
       expect(items[0].sellIn).toBe(sellIn);
@@ -85,7 +85,7 @@ describe("Gilded Rose", function() {
     
     it("Backstage passes: increases in quality as the selling value approaches", function() {
       const sellIns = [15, 10, 5, 0], quality = 10;
-      let items = sellIns.map(sellIn => new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, quality));
+      let items = sellIns.map(sellIn => new Item(ITEM_TYPES.BACKSTAGE, sellIn, quality));
       const expected_quality = sellIns.map(sellIn => {
         
         if (sellIn <= 0)
